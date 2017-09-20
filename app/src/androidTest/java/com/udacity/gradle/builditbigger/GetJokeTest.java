@@ -15,14 +15,13 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class GetJokeTest implements JokeReceivedListener {
 
-    private EndpointsAsyncTask endpointsAsyncTask;
     private ConditionVariable execution;
     private String setupAndPunchline;
 
     @Test
     public void jokeSuccessfullyRetrieved() {
 
-        endpointsAsyncTask = new EndpointsAsyncTask();
+        EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask();
         execution = new ConditionVariable();
 
         endpointsAsyncTask.execute(this);
