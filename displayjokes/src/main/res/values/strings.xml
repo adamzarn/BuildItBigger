@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DisplayJokes</string>
+    <string name="show_punchline_button_text">Show Punchline</string>
 </resources>

@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.android.displayjokes.DisplayJokeActivity;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 
 /**
@@ -19,6 +21,8 @@ import com.google.android.gms.ads.AdView;
 public class MainActivityFragment extends Fragment implements JokeReceivedListener {
 
     ProgressBar progressBar;
+    InterstitialAd interstitialAd;
+    private String setupAndPunchline;
 
     public MainActivityFragment() {
     }
@@ -31,9 +35,7 @@ public class MainActivityFragment extends Fragment implements JokeReceivedListen
         progressBar.setVisibility(View.INVISIBLE);
 
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
-        // Create an ad request. Check logcat output for the hashed device ID to
-        // get test ads on a physical device. e.g.
-        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
+
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
@@ -61,6 +63,39 @@ public class MainActivityFragment extends Fragment implements JokeReceivedListen
     @Override
     public void jokeReceived(String setupAndPunchline) {
         progressBar.setVisibility(View.INVISIBLE);
-        displayJoke(setupAndPunchline);
+        this.setupAndPunchline = setupAndPunchline;
+
+        if (interstitialAd.isLoaded()) {
+            interstitialAd.show();
+        } else {
+            displayJoke(setupAndPunchline);
+        }
+
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        interstitialAd = new InterstitialAd(getActivity());
+        interstitialAd.setAdUnitId(getString(R.string.banner_ad_unit_id));
+        getAd();
+
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                getAd();
+                displayJoke(setupAndPunchline);
+            }
+        });
+
+    }
+
+    private void getAd() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        interstitialAd.loadAd(adRequest);
+    }
+
 }
