@@ -18,6 +18,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        free {
+            applicationId "com.udacity.gradle.builditbigger.free"
+            buildConfigField "boolean", "PAID_VERSION", "false"
+        }
+        paid {
+            applicationId "com.udacity.gradle.builditbigger.paid"
+            buildConfigField "boolean", "PAID_VERSION", "true"
+        }
+    }
+
 }
 
 dependencies {
@@ -31,5 +43,4 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.8.0'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
     compile project(path: ':backend', configuration: 'android-endpoints')
-    compile project(path: ':backend')
 }

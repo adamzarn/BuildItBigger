@@ -2,9 +2,10 @@ package com.example;
 
 public class JokeProvider {
 
-    public static String getJoke() {
-        return "Why did the dog throw the clock out the window?\n\n" +
-                "Because he wanted to get rid of the ticks.";
+    public static Joke getJoke() {
+        Joke joke = new Joke();
+        joke.setText("Why is 6 afraid of 7?", "Because 7 8 9.");
+        return joke;
     }
 
 }
